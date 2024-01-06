@@ -2,7 +2,7 @@ using System.Reflection;
 using MassTransit;
 using Masstransit.Common;
 using Microsoft.EntityFrameworkCore;
-using Users.Repository;
+using Users.Data;
 using Users.Services;
 using Users.Services.Contracts;
 

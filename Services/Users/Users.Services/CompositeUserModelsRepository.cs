@@ -1,5 +1,5 @@
-﻿using Users.Model;
-using Users.Repository;
+﻿using Users.Data;
+using Users.Model;
 using Users.Services.Contracts;
 
 namespace Users.Services
