@@ -2,7 +2,6 @@
 using Users.Bus.Contracts.Activities;
 using Users.Model;
 using Users.Services.Contracts;
-using Users.WorkerService.Consumers;
 
 namespace Users.WorkerService.Activities
 {
@@ -30,6 +29,7 @@ namespace Users.WorkerService.Activities
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "Error occurred while create activity execute {RequestName}. RequestId: {RequestId}", nameof(CreateUserActivity), context.RequestId);
                 return context.Faulted(e);
             }
         }
@@ -44,7 +44,7 @@ namespace Users.WorkerService.Activities
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                _logger.LogError("Error occured while compensate {RequestName}. RequestId: {RequestId}", nameof(CreateUserActivity), context.RequestId);
                 throw;
             }
         }
