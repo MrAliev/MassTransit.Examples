@@ -13,7 +13,7 @@ using Wallets.WorkerService.Activities;
 
 namespace Accounts.WorkerService.Consumers
 {
-    public class CreateAccountRequestConsumer : 
+    public class CreateAccountRequestConsumer :
         IConsumer<CreateAccountRequest>,
         IConsumer<RoutingSlipCompleted>,
         IConsumer<RoutingSlipFaulted>
@@ -29,43 +29,31 @@ namespace Accounts.WorkerService.Consumers
 
         public Task Consume(ConsumeContext<CreateAccountRequest> context)
         {
-            try
-            {
-                  _logger.LogInformation("Create Routing slip");
 
-                  var routingSlip = CreateRoutingSlip(context);
+            _logger.LogInformation("Create Routing slip");
 
-                  return context.Execute(routingSlip);
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
+            var routingSlip = CreateRoutingSlip(context);
+
+            return context.Execute(routingSlip);
+
         }
 
         private RoutingSlip CreateRoutingSlip(ConsumeContext<CreateAccountRequest> context)
         {
             var builder = new RoutingSlipBuilder(NewId.NextGuid());
 
-            builder.AddSubscription(context.ReceiveContext.InputAddress, RoutingSlipEvents.ActivityCompleted | RoutingSlipEvents.ActivityFaulted);
+            //builder.AddSubscription(context.ReceiveContext.InputAddress, RoutingSlipEvents.ActivityCompleted | RoutingSlipEvents.ActivityFaulted);
+            builder.AddSubscription(context.ReceiveContext.InputAddress, RoutingSlipEvents.Completed | RoutingSlipEvents.Faulted);  // <= Fix
 
             builder.AddRequestVariables(context);
 
-            builder.AddVariable("Name", context.Message.UserName);
+            builder.AddActivity(nameof(CreateUserActivity),
+                UriExtensions.CreateQueueUri(_nameFormatter.ExecuteActivity<CreateUserActivity, CreateUserActivityArgs>()),
+                new CreateUserActivityArgs { Name = context.Message.UserName });
 
-            builder.AddActivity(nameof(CreateUserActivity), 
-                UriExtensions.CreateQueueUri(_nameFormatter.ExecuteActivity<CreateUserActivity, CreateUserActivityArgs>()), 
-                new CreateUserActivityArgs
-            {
-                Name = context.Message.UserName
-            });
-
-            builder.AddActivity(nameof(CreateWalletActivity), 
-                UriExtensions.CreateQueueUri(_nameFormatter.ExecuteActivity<CreateWalletActivity, CreateWalletActivityArgs>()), 
-                new CreateWalletActivityArgs
-                {
-                    
-                });
+            builder.AddActivity(nameof(CreateWalletActivity),
+                UriExtensions.CreateQueueUri(_nameFormatter.ExecuteActivity<CreateWalletActivity, CreateWalletActivityArgs>()),
+                new CreateWalletActivityArgs { });
 
             return builder.Build();
         }
@@ -103,7 +91,7 @@ namespace Accounts.WorkerService.Consumers
                 var responseEndpoint = await context.GetResponseEndpoint<CreateAccountResponse>(responseAddress, requestId);
                 await responseEndpoint.Send<ExceptionResponse>(new ExceptionResponse
                 {
-                   Exception = new Exception()
+                    Exception = new Exception()
                 });
             }
         }
