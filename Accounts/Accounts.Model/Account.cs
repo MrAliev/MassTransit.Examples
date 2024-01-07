@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Users.Model;
 using Wallets.Model;
@@ -7,8 +8,7 @@ namespace Accounts.Model
 {
     public class Account
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; init; }
+        [ReadOnly(true)] public Guid Id => User.Id;  // <= Fix Aggregate Account item Id
 
         [Required] public User User { get; init; } = null!;
 

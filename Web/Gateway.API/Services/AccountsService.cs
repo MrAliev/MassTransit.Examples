@@ -24,7 +24,8 @@ public class AccountsService  : IAccountsService
         var client = _bus.CreateRequestClient<CreateAccountRequest>();
         var request = new CreateAccountRequest { UserName = name };
 
-        Response response = client.GetResponse<CreateAccountRequest, ExceptionResponse>(request).GetAwaiter().GetResult();
+        //Response response = client.GetResponse<CreateAccountRequest, ExceptionResponse>(request).GetAwaiter().GetResult();
+        Response response = client.GetResponse<CreateAccountResponse, ExceptionResponse>(request).GetAwaiter().GetResult(); // <= Fix
 
         return response switch
         {
