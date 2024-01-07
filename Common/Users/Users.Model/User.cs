@@ -3,16 +3,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Users.Model
 {
-    public class CompositeUserModel
+    public class User
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; init; }
 
-        [Required] public string FirstProperty { get; set; } = null!;
+        public bool IsDeleted { get; set; }
 
-        public CompositeUserModel(string firstProperty)
+        [Required] public string Name { get; set; }
+
+        public User(string name)
         {
-            FirstProperty = firstProperty;
+            Name = name;
         }
     }
 }

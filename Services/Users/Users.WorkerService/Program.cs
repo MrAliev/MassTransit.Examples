@@ -1,5 +1,3 @@
-using System.Reflection;
-using MassTransit;
 using Masstransit.Common;
 using Microsoft.EntityFrameworkCore;
 using Users.Data;
@@ -13,7 +11,7 @@ namespace Users.WorkerService
         public static void Main(string[] args)
         {
             var builder = Host.CreateApplicationBuilder(args);
-            builder.Services.AddTransient<ICompositeUsersRepository, CompositeUserModelsRepository>();
+            builder.Services.AddTransient<IUsersRepository, UsersRepository>();
             builder.Services.AddDbContext<UsersDbContext>(options => options.UseInMemoryDatabase("UsersInMemoryDb"));
             builder.Services.UseMasstransitDefault();
 

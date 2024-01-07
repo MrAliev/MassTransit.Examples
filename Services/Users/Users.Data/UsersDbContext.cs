@@ -5,13 +5,10 @@ namespace Users.Data
 {
     public class UsersDbContext : DbContext
     {
-        public DbSet<CompositeUserModel> CompositeUsers { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public UsersDbContext(DbContextOptions options) : base(options)
         {
-
         }
     }
-
-     
 }

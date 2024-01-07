@@ -1,7 +1,8 @@
-
-using Gateway.API.Interfaces;
+using Accounts.Services.Contracts;
 using Gateway.API.Services;
 using Masstransit.Common;
+using Users.Services.Contracts;
+using Wallets.Service.Contracts;
 
 namespace Gateway.API
 {
@@ -13,7 +14,9 @@ namespace Gateway.API
 
             // Add services to the container.
             builder.Services.UseMasstransitDefault();
-            builder.Services.AddTransient<IAggregateUserManager, AggregateUserManager>();
+            builder.Services.AddTransient<IUsersService, UsersService>();
+            builder.Services.AddTransient<IWalletsService, WalletsService>();
+            builder.Services.AddTransient<IAccountsService, AccountsService>();
 
 
             builder.Services.AddControllers();

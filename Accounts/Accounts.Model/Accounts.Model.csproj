@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Users\Users.Model\Users.Model.csproj" />
+    <ProjectReference Include="..\..\Common\Wallets\Wallets.Model\Wallets.Model.csproj" />
+  </ItemGroup>
+
+</Project>

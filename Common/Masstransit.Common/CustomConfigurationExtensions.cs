@@ -35,6 +35,7 @@ public static class CustomConfigurationExtensions
                 
             x.AddActivities(entryAssembly);
             x.AddConsumers(entryAssembly);
+            
 
             x.UsingRabbitMq((context, cfg) =>
             {
