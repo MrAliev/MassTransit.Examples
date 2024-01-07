@@ -1,5 +1,3 @@
-using Accounts.Services;
-using Accounts.Services.Contracts;
 using Masstransit.Common;
 
 namespace Accounts.WorkerService
