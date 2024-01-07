@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Users\Users.Model\Users.Model.csproj" />
-    <ProjectReference Include="..\..\Common\Wallets\Wallets.Model\Wallets.Model.csproj" />
+    <ProjectReference Include="..\..\Users\Users.Model\Users.Model.csproj" />
+    <ProjectReference Include="..\..\Wallets\Wallets.Model\Wallets.Model.csproj" />
   </ItemGroup>
 
 </Project>
