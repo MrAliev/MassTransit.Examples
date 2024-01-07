@@ -13,9 +13,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Accounts\Accounts.Bus.Contracts\Accounts.Bus.Contracts.csproj" />
+    <ProjectReference Include="..\..\Common\Accounts\Accounts.Services.Contracts\Accounts.Services.Contracts.csproj" />
     <ProjectReference Include="..\..\Common\Masstransit.Common\Masstransit.Common.csproj" />
     <ProjectReference Include="..\..\Common\Users\Users.Bus.Contracts\Users.Bus.Contracts.csproj" />
     <ProjectReference Include="..\..\Common\Users\Users.Model\Users.Model.csproj" />
+    <ProjectReference Include="..\..\Common\Users\Users.Services.Contracts\Users.Services.Contracts.csproj" />
+    <ProjectReference Include="..\..\Common\Wallets\Wallets.Bus.Contracts\Wallets.Bus.Contracts.csproj" />
+    <ProjectReference Include="..\..\Common\Wallets\Wallets.Service.Contracts\Wallets.Service.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

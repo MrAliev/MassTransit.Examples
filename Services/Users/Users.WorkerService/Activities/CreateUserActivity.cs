@@ -1,49 +1,51 @@
 ﻿using MassTransit;
-using Users.Bus.Contracts.Requests;
+using Users.Bus.Contracts.Activities;
+using Users.Model;
 using Users.Services.Contracts;
+using Users.WorkerService.Consumers;
 
 namespace Users.WorkerService.Activities
 {
-    public class CreateUserActivity : IActivity<CreateUserActivityArgs, CreateUserRequestLog>
+    public class CreateUserActivity : IActivity<CreateUserActivityArgs, CreateUserActivityLog>
     {
-        private readonly ICompositeUsersRepository _repository;
         private readonly ILogger<CreateUserActivity> _logger;
+        private readonly IUsersRepository _repository;
 
-        public CreateUserActivity(ICompositeUsersRepository repository, ILogger<CreateUserActivity> logger)
+        public CreateUserActivity(ILogger<CreateUserActivity> logger, IUsersRepository repository)
         {
-            _repository = repository;
             _logger = logger;
+            _repository = repository;
         }
 
         public async Task<ExecutionResult> Execute(ExecuteContext<CreateUserActivityArgs> context)
         {
             try
             {
-                var model = await _repository.CreateAsync(context.Arguments.FirstProperty);
-                return context.CompletedWithVariables(new { model });
+                var model = await _repository.CreateAsync(context.Arguments.Name);
+                
+                context.Message.Variables.Add(nameof(User), model);
+                context.Message.Variables.Add("ParentId", model.Id);
+
+                return context.CompletedWithVariables(new { model.Id });
             }
             catch (Exception e)
             {
-                _logger.LogWarning(e,"Create error!");
                 return context.Faulted(e);
             }
         }
 
-        public async Task<CompensationResult> Compensate(CompensateContext<CreateUserRequestLog> context)
+        public async Task<CompensationResult> Compensate(CompensateContext<CreateUserActivityLog> context)
         {
             try
             {
-                var id = context.Log.Id;
-                _logger.LogWarning("Run compensate logic. Request Id:{requestId}", context.RequestId);
-                await Task.Delay(1000); //some compensate logic
+                await _repository.DeleteAsync(context.Log.Id, true);
 
                 return context.Compensated();
-
             }
             catch (Exception e)
             {
-                _logger.LogWarning(e,"Create error!");
-                return context.Failed(e);
+                Console.WriteLine(e);
+                throw;
             }
         }
     }
